@@ -1,0 +1,23 @@
+
+
+<mvc:View
+	controllerName=""
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+  xmlns:table="sap.ui.table"
+>
+<IllustratedMessage
+title="{i18n>appTitle}"
+illustrationType="sapIllus-SuccessHighFive"
+enableVerticalResponsiveness="true"
+description="{i18n>appDescription}">
+<additionalContent>
+  <Button
+    text="{formatter: 'formatter.formatValue', path: 'i18n>btnText'}"
+    />
+</additionalContent>
+</IllustratedMessage>
+</mvc:View>

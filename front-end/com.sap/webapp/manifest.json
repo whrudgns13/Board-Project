@@ -1,0 +1,125 @@
+{
+	"_version": "1.12.0",
+
+	"sap.app": {
+		"id": "com.sap",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "${version}"
+		}
+	},
+
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.sap.view.Framework",
+			"type": "XML",
+			"async": true,
+			"id": "Framework"
+		},
+
+		"dependencies": {
+			"minUI5Version": "1.120.5",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"resources": {
+			"css" : [
+				{"uri" : "css/style.css"}
+			]
+		},
+		"handleValidation": true,
+
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.sap.i18n.i18n"
+				}
+			}
+		},
+
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "com.sap.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true,
+				"clearControlAggregation": false
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "main",
+					"target": "main"
+				},
+				{
+					"pattern": "mypage",
+					"name": "mypage",
+					"target": "mypage"
+				},
+				{
+					"pattern": "posts",
+					"name": "posts",
+					"target": "posts"
+				},
+				{
+					"pattern": "posts/read/:post_id:",
+					"name": "read",
+					"target": "read"
+				},
+				{
+					"pattern": "posts/write/:post_id:",
+					"name": "write",
+					"target": "write"
+				}
+			],
+			"targets": {
+				"main" : {
+					"viewName": "Main",
+					"viewId": "Main"
+				},
+				"mypage": {					
+					"viewName": "MyPage",
+					"viewId": "MyPage"
+				},
+				"posts": {				
+					"viewPath" : "com.sap.view.post",	
+					"viewName": "Posts",
+					"viewId": "posts"
+				},
+				"write": {				
+					"viewPath" : "com.sap.view.post",	
+					"viewName": "PostWrite",
+					"viewId": "PostWrite"
+				},
+				"read": {				
+					"viewPath" : "com.sap.view.post",	
+					"viewName": "PostRead",
+					"viewId": "PostRead"
+				}
+			}
+		}
+	}
+}

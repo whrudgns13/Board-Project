@@ -1,0 +1,55 @@
+<mvc:View
+	controllerName="com.sap.controller.post.PostRead"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+  xmlns:core="sap.ui.core"
+  xmlns:control="com.sap.control"
+  core:require="{
+		formatter: 'com/sap/model/formatter'
+	}"
+>
+<Page showHeader="false">
+  <content>
+    <VBox>
+      <control:Board
+        title="{ViewModel>/post/title}"
+        email="{ViewModel>/post/email}"
+        content="{ViewModel>/post/content}"
+      />
+ 
+      <FeedInput
+          post="onComment"
+          class="sapUiSmallMarginTopBottom" />
+      <List items="{ViewModel>/comments}">        
+        <FeedListItem
+          sender="{ViewModel>email}"
+          icon="{AuthorPicUrl}"
+          senderPress="onPress"
+          iconPress="onPress"
+          iconDensityAware="false"
+          info="{Type}"
+          timestamp="{formatter: 'formatter.formatDate', path: 'ViewModel>created_at'}"
+          text="{ViewModel>content}"
+          convertLinksToAnchorTags="All"
+        />
+      </List>
+    </VBox>
+  </content>
+  <footer>
+    <OverflowToolbar>
+      <ToolbarSpacer/>
+      <Button type="Emphasized" text="돌아가기" press=".onBack"/>
+      <Button 
+        type="Emphasized"
+        text="수정"
+        visible="{= ${ViewModel>/post/email} === ${ComponentModel>/user/email} }"
+        press=".onEdit"
+      />
+      <!-- <Button type="Emphasized" text="저장" press=".onPost" visible="{= ${ViewModel>/mode}==='M' || ${ViewModel>/mode}==='C'}"/>       -->
+    </OverflowToolbar>
+  </footer>
+</Page>
+</mvc:View>

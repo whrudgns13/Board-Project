@@ -1,0 +1,25 @@
+<mvc:View
+	controllerName="com.sap.controller.MyPage"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+  xmlns:table="sap.ui.table"
+  xmlns:form="sap.ui.layout.form"
+>
+<Page title="마이 페이지">
+  <content>
+    <form:SimpleForm>
+      <Label text="이름"/>
+      <Input enabled="false" value="{ComponentModel>/user/name}"/>
+      <Label text="아이디"/>
+      <Input enabled="false" value="{ComponentModel>/user/id}"/>
+      <Label text="이메일"/>
+      <Input enabled="false" value="{ComponentModel>/user/email}"/>
+      <Label text="패스워드"/>
+      <Input enabled="false" value="{ComponentModel>/user/password}"/>
+    </form:SimpleForm>
+  </content>
+</Page>
+</mvc:View>

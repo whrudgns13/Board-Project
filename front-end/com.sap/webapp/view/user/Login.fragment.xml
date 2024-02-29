@@ -1,0 +1,20 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>
+
+  <Dialog title="로그인" >
+    <VBox class="sapUiSmallMargin">
+      <Label text="아이디" />
+      <Input value="{oViewModel>/user/id}" submit="onLogin"/>
+      <Label text="비밀번호" />
+      <Input type="Password" value="{oViewModel>/user/password}" submit="onLogin"/>
+    </VBox>
+    <beginButton>
+      <Button type="Emphasized" text="Submit" press="onLogin"/>
+    </beginButton>
+    <endButton>
+      <Button text="Close" press="onDialogClose('login')"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

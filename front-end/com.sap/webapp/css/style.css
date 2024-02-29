@@ -1,0 +1,19 @@
+.sapUiComponentContainer .padding-bottom{
+  padding-bottom: 1rem;
+}
+
+.sapTntToolPageContentWrapper>aside{
+  height: 100%;
+}
+.sapMPage>section{
+  background-color: #fff;
+}
+
+.flexGapS{
+  gap : 10px;
+}
+
+.board>div:last-child{
+  border-top : 1px solid gray;
+  border-bottom: 1px solid gray;
+}

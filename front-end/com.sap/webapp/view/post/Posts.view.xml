@@ -1,0 +1,44 @@
+<mvc:View
+	controllerName="com.sap.controller.post.Posts"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+  xmlns:table="sap.ui.table"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  core:require="{
+		formatter: 'com/sap/model/formatter'
+	}"
+>
+<Page title="게시판">
+  <headerContent>
+      <Button text="글쓰기" press="onNavWrite"/>
+  </headerContent>
+  <content>
+    <Table items="{ViewModel>/posts}" >
+      <columns>
+        <Column>
+          <Text text="제목"/>
+        </Column>
+        <Column>
+          <Text text="생성자"/>
+        </Column>
+        <Column>
+          <Text text="생성일"/>
+        </Column>
+      </columns>
+      <items>
+        <ColumnListItem type="Active" press="onPostDetail">
+          <cells>
+            <Text text="{ViewModel>title}"/>
+            <Text text="{= ${ViewModel>id} || ${ViewModel>email}}"/>
+            <Text text="{formatter: 'formatter.formatDate', path: 'ViewModel>created_at'}"/>
+          </cells>
+        </ColumnListItem>
+      </items>
+    </Table>
+  </content>
+</Page>
+</mvc:View>
