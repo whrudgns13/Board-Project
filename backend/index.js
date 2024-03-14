@@ -191,6 +191,7 @@ app.get("/posts/:id", async (req, res) => {
 
 app.post("/post",async (req, res)=>{
   const {title, content, mode, postId} = req.body;
+
   try{    
     const { token } = authenticateToken(req, res); 
     let query;
@@ -214,11 +215,31 @@ app.post("/post",async (req, res)=>{
 
 
 app.post("/comments",async (req, res)=>{
-  const {comment,postId} = req.body;
+  const {content, postId, mode, commentId} = req.body;
+  console.log(content);
+  try{
+    const { token } = authenticateToken(req, res);
+    let query = `INSERT INTO COMMENTS (email, post_id, content) VALUES ('${token.email}', '${postId}', '${content}')`;;
+
+    if(mode ==="M" && commentId){
+      query = `UPDATE COMMENTS SET content = '${content}' WHERE post_id = ${postId} AND comment_id = ${commentId}`;
+    }
+
+    await callDatabase(query);
+    res.send({message : "완료"});
+  }catch(error){
+    console.log(error);
+    res.status(400).send({message : error});
+  }
+
+});
+
+app.delete("/comments",async (req, res)=>{
+  const {commentId, postId} = req.body;
   
   try{
     const { token } = authenticateToken(req, res);
-    const query = `INSERT INTO COMMENTS (email, post_id, content) VALUES ('${token.email}', '${postId}', '${comment}')`;
+    const query = `DELETE FROM COMMENTS WHERE post_id = '${postId}' AND comment_id = '${commentId}'`;
     await callDatabase(query);
     res.send({message : "완료"});
   }catch(error){

@@ -20,7 +20,7 @@ export default class Framework extends BaseController {
 		// oView.addStyleClass(this.getOwnerComponent().getContentDensityClass());
 
 		const navigationList = await (
-			await fetch("/staticData/NavigationList.json")
+			await fetch("http://localhost:3000/NavigationList.json")
 		).json();
 
 		const user = {
@@ -60,15 +60,22 @@ export default class Framework extends BaseController {
 			return;
 		}
 
-		const { token } = await (
-			await fetch("/email", {
+		const response = await fetch("http://localhost:3000/users/mail", {
 				method: "POST",
 				body: JSON.stringify({ email }),
 				headers: {
 					"Content-Type": "application/json",
 				},
-			})
-		).json();
+		})
+
+		if(!response.ok){
+			MessageBox.information("이메일을 보내는대 오류가 발생했습니다.");
+			return
+		}
+		
+		MessageBox.information("이메일을 보냈습니다.");
+		
+		const { token } = await response.json();
 
 		console.log(token);
 
@@ -120,7 +127,7 @@ export default class Framework extends BaseController {
 		}
 
 		try {
-			const response = await fetch("/join", {
+			const response = await fetch("http://localhost:3000/users/join", {
 				method: "POST",
 				headers: {
 					authorization: token,
@@ -178,9 +185,10 @@ export default class Framework extends BaseController {
 			body.id = id;
 		}
 
-		const response = await fetch("/login", {
+		const response = await fetch("http://localhost:3000/users/login", {
 			method: "POST",
 			body: JSON.stringify(body),
+			credentials : "include",
 			headers: {
 				"Content-Type": "application/json",
 			},

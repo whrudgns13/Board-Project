@@ -19,7 +19,8 @@ export default class Component extends UIComponent {
 
 		// create the device model
 		this.setModel(models.createDeviceModel(), "device");
-		const {token ,accessToken} = await (await fetch("/authenticate")).json();
+		
+		const {token ,accessToken} = await (await fetch("http://localhost:3000/users/authenticate",{credentials : "include"})).json();
 		
 		this.setModel(new JSONModel({
 			user : token,

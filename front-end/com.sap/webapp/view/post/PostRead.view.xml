@@ -23,8 +23,43 @@
       <FeedInput
           post="onComment"
           class="sapUiSmallMarginTopBottom" />
-      <List items="{ViewModel>/comments}">        
-        <FeedListItem
+      <List items="{ViewModel>/comments}">
+        <CustomListItem>
+          <content>
+            <FeedInput
+              width="100%"
+              visible="{= ${ViewModel>mode}==='M'}"
+              post="onComment"
+              value="{ViewModel>content}"
+              class="sapUiSmallMarginTopBottom"
+            />
+            <HBox 
+              class="sapUiSmallMargin"
+              visible="{= ${ViewModel>mode}==='R'}"
+            >
+              <Avatar
+                displaySize="S"
+                displayShape="Square"
+                showBorder="true"
+                class="sapUiSmallMarginEnd"
+              />
+              <VBox
+                width="100%"
+                class="common__gap sapUiSmallMarginEnd">
+                  <Title titleStyle="H5" text="{ViewModel>email}"/>
+                  <Text text="{ViewModel>content}"/>
+                  <Text text="{formatter: 'formatter.formatDate', path: 'ViewModel>created_at'}"/>
+              </VBox>
+              <Button
+                id="menuButton"
+                visible="{= ${ViewModel>email}===${ComponentModel>/user/email} }"
+                icon="sap-icon://overflow"
+                press="onMenuOpen"
+              />
+            </HBox>
+          </content>
+        </CustomListItem>   
+        <!-- <FeedListItem
           sender="{ViewModel>email}"
           icon="{AuthorPicUrl}"
           senderPress="onPress"
@@ -34,7 +69,18 @@
           timestamp="{formatter: 'formatter.formatDate', path: 'ViewModel>created_at'}"
           text="{ViewModel>content}"
           convertLinksToAnchorTags="All"
-        />
+        >
+          <actions>
+            <FeedListItemAction 
+              text="Delete" 
+              press="onCommentDelete"
+            />
+            <FeedListItemAction 
+              text="Modify" 
+              press="onCommentModify"
+            />
+          </actions>
+        </FeedListItem> -->
       </List>
     </VBox>
   </content>
