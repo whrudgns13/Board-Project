@@ -9,6 +9,21 @@ import { FindUserDto } from './dto/find-user.dto';
 
 @Injectable()
 export class UsersService {
+  logout(res: Response) {
+    res.clearCookie("refreshToken");
+    return res.sendStatus(200);
+  }
+
+  async findUser(req: Request , res : Response) {
+    try{
+      const { token, accessToken } = this.authService.authenticateToken(req, res);
+      const user = await this.find({email : token.email});
+
+      return res.send({ user, accessToken });
+    }catch(error){
+      return res.status(401).send({message : error});
+    }
+  }
   
   constructor( 
     @InjectRepository(Users)
@@ -89,7 +104,7 @@ export class UsersService {
 
   authenticate(req : Request, res: Response) {    
     try{
-      return this.authService.authenticateToken(req, res);
+      return res.send(this.authService.authenticateToken(req, res));
     }catch(error){
       return res.send({message : error});
     }

@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { UsersService } from './users.service';
-import { AuthenticationService } from 'src/jwt/Authentication.service';
-import { Users } from './entity/Users.entity';
 
 @Controller('users')
 export class UsersController {
@@ -15,13 +13,13 @@ export class UsersController {
     return this.userService.findAll();
   }
 
-  find(id : string){
-   
+  @Get("user")
+  findUser(@Req() req : Request, @Res() res: Response){
+    return this.userService.findUser(req, res);
   }
 
   @Post("/join")
   create(@Req() req : Request, @Res() res: Response){   
-    console.log("접근2");
     return this.userService.create(req, res);
   }
 
@@ -43,4 +41,8 @@ export class UsersController {
     return this.userService.login(req, res);
   }
 
+  @Get("/logout")
+  logout(@Res() res: Response){
+    return this.userService.logout(res);
+  }
 }
