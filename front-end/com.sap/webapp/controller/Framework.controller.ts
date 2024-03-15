@@ -211,7 +211,9 @@ export default class Framework extends BaseController {
 	}
 
 	public onLogout() {
-		fetch("/logout");
+		fetch("http://localhost:3000/users/logout",{
+			credentials : "include"
+		});
 		this.ComponentModel.setProperty("/isLogin", false);
 		this.ComponentModel.setProperty("/accessToken", "");
 		this.ComponentModel.setProperty("/user", {});
