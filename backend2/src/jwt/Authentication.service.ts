@@ -32,7 +32,7 @@ export class AuthenticationService {
     return {accessToken, refreshToken};
   };
 
-  //토큰 반환
+  //토큰 정보 반환
   validationToken(token : string){
     return this.jwtService.verify(token);
   };
@@ -65,9 +65,9 @@ export class AuthenticationService {
   
         res.cookie("refreshToken", newToken.refreshToken, { httpOnly: true });
   
-        return res.send({ token, accessToken: newToken.accessToken });
+        return { token, accessToken: newToken.accessToken };
       } catch (error) {
-        throw "토큰이 없습니다.";
+        throw "로그인 먼저 진행해주세요";
       }
     }
   }
