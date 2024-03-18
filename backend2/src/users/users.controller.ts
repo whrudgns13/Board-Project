@@ -25,14 +25,12 @@ export class UsersController {
 
   @Post("/mail")
   mail(@Body() body){
-    console.log("접근");
     const { email } = body;
     return this.userService.sendMail(email);
   }
 
   @Get("/authenticate")
   authenticate(@Req() req : Request, @Res() res: Response){
-    console.log(req.cookies);
     return this.userService.authenticate(req,res);
   }
 

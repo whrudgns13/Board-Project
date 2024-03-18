@@ -30,14 +30,13 @@ export default class PostWrite extends BaseController {
 		if(!post_id){
 			this.ViewModel.setProperty("/",{
 				title : "",
-				content : "",
-				mode : "C"
+				content : ""
 			});
 			return;
 		}
 
-		const {post} = await (await fetch(`/posts/${post_id}`)).json();
-		this.ViewModel.setProperty("/",{ ...post, mode : "M"});
+		const posts = await (await fetch(`http://localhost:3000/posts/${post_id}`)).json();
+		this.ViewModel.setProperty("/", posts);
 	}
 
 	public async onPost(){
@@ -64,24 +63,24 @@ export default class PostWrite extends BaseController {
 			const file = new File([blob], `${fileName}.${fileType}`);
 			
 			const formData = new FormData();
-			formData.append('image', file);
+			formData.append('file', file);
 			
-			const {path} = await (await fetch("/imgUpload",{
+			const {path} = await (await fetch("http://localhost:3000/posts/upload",{
 				method : "POST",
-				body : formData,
+				body : formData,				
 			})).json();
 			
-			image.src = `../${path}`;
+			image.src = `http://localhost:3000/${path}`;
 		}));
 
 
-		const response = await this.fetchAPI("/post", {
+		const response = await this.fetchAPI("http://localhost:3000/posts", {
 			method: "POST",
 			body: JSON.stringify({
 				title : title,
 				content : content.innerHTML,
-				mode : this.ViewModel.getProperty("/mode"),
-				postId : this.ViewModel.getProperty("/post_id") 
+				// mode : this.ViewModel.getProperty("/mode"),
+				// postId : this.ViewModel.getProperty("/post_id") 
 			})
 		});
 		

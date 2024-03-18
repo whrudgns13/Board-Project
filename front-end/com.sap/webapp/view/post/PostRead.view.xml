@@ -15,9 +15,9 @@
   <content>
     <VBox>
       <control:Board
-        title="{ViewModel>/post/title}"
-        email="{ViewModel>/post/email}"
-        content="{ViewModel>/post/content}"
+        title="{ViewModel>/title}"
+        email="{ViewModel>/email}"
+        content="{ViewModel>/content}"
       />
  
       <FeedInput
@@ -91,7 +91,7 @@
       <Button 
         type="Emphasized"
         text="수정"
-        visible="{= ${ViewModel>/post/email} === ${ComponentModel>/user/email} }"
+        visible="{= ${ViewModel>/email} === ${ComponentModel>/user/email} }"
         press=".onEdit"
       />
       <!-- <Button type="Emphasized" text="저장" press=".onPost" visible="{= ${ViewModel>/mode}==='M' || ${ViewModel>/mode}==='C'}"/>       -->

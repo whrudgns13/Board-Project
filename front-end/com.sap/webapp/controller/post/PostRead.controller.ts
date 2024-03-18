@@ -37,18 +37,19 @@ export default class PostRead extends BaseController {
 	}
 
 	public async getPost(post_id : string){
-		const data = await (await fetch(`/posts/${post_id}`)).json();
-		data.comments = data.comments.map((comment : any)=>{
-			comment.mode = "R";
-			return comment;
-		})
-		this.ViewModel.setProperty("/",{ ...data});
+		const data = await (await fetch(`http://localhost:3000/posts/${post_id}`)).json();
+		// data.comments = data.comments.map((comment : any)=>{
+		// 	comment.mode = "R";
+		// 	return comment;
+		// })
+		this.ViewModel.setProperty("/",data);
+		
 		//return data;
 	}
 
 	public onEdit(){
 		this.navTo("write",{
-			post_id : this.ViewModel.getProperty("/post/post_id")
+			post_id : this.ViewModel.getProperty("/post_id")
 		})
 	}
 

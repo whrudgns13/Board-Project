@@ -26,8 +26,8 @@ export default class Posts extends BaseController {
 	}
 
 	public async getPost(){
-		const {data} = await (await fetch("/posts")).json();
-		this.ViewModel.setProperty("/posts",data);
+		const posts = await (await fetch("http://localhost:3000/posts")).json();
+		this.ViewModel.setProperty("/posts",posts);
 	}
 
 	public onPostDetail(oEvent : ListItemBase$PressEvent){
