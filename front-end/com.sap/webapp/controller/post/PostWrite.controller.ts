@@ -35,8 +35,8 @@ export default class PostWrite extends BaseController {
 			return;
 		}
 
-		const posts = await (await fetch(`http://localhost:3000/posts/${post_id}`)).json();
-		this.ViewModel.setProperty("/", posts);
+		const {post} = await (await fetch(`http://localhost:3000/posts/${post_id}`)).json();
+		this.ViewModel.setProperty("/", post);
 	}
 
 	public async onPost(){

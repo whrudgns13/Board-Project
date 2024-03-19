@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity,  PrimaryGeneratedColumn } from 'typeo
 @Entity({name :"posts"})
 export class Posts {
   @PrimaryGeneratedColumn('increment')
-  public post_id: string;
+  public post_id: number;
 
   @Column()
   public title: string;

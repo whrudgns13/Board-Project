@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { Posts } from './posts/entity/Posts.entity';
 import { PostsModule } from './posts/posts.module';
+import { Comments } from './posts/entity/Comments.entity';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { PostsModule } from './posts/posts.module';
           username: configService.get("DATABASE_USER"),
           password: configService.get("DATABASE_PASSWORD"),
           database: configService.get("DATABASE_DATABASE"),
-          entities : [Users, Posts],
+          entities : [Users, Posts, Comments],
           synchronize: true, 
         }
       },

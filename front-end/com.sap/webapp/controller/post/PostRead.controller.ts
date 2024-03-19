@@ -10,6 +10,12 @@ import { Menu$ItemSelectEvent } from "sap/ui/unified/Menu";
 import MenuItem from "sap/m/MenuItem";
 import MessageBox from "sap/m/MessageBox";
 
+type Comment = {
+	content : string,
+	post_id : string,
+	comment_id? : string
+}
+
 /**
  * @namespace com.sap.controller
  */
@@ -38,10 +44,10 @@ export default class PostRead extends BaseController {
 
 	public async getPost(post_id : string){
 		const data = await (await fetch(`http://localhost:3000/posts/${post_id}`)).json();
-		// data.comments = data.comments.map((comment : any)=>{
-		// 	comment.mode = "R";
-		// 	return comment;
-		// })
+		data.comments = data.comments.map((comment : any)=>{
+			comment.mode = "R";
+			return comment;
+		})
 		this.ViewModel.setProperty("/",data);
 		
 		//return data;
@@ -49,23 +55,28 @@ export default class PostRead extends BaseController {
 
 	public onEdit(){
 		this.navTo("write",{
-			post_id : this.ViewModel.getProperty("/post_id")
+			post_id : this.ViewModel.getProperty("/post/post_id")
 		})
 	}
 
 	public async onComment(oEvent : FeedInput$PostEvent){
 		const content = oEvent.getParameter("value");
 		const post_id = this.ViewModel.getProperty("/post/post_id");
-		const oContext = oEvent.getSource().getParent().getBindingContext("ViewModel");
+		const control = oEvent.getSource();
 
-		const response = await this.fetchAPI("/comments",{
-			method : "POST",
-			body : JSON.stringify({
-				content,
-				postId : post_id,
-				commentId : oContext && this.ViewModel.getProperty(oContext.getPath()+"/comment_id"),
-				mode : oContext && this.ViewModel.getProperty(oContext.getPath()+"/mode")
-			})
+		const body : Comment = {
+			content,
+			post_id
+		};
+
+		if(control.getBinding("value")){
+			const path = control.getBinding("value").getContext().getPath();
+			body.comment_id = this.ViewModel.getProperty(path+"/comment_id");
+		}
+
+		const response = await this.fetchAPI("http://localhost:3000/posts/comment",{
+			method : body.comment_id ? "PATCH" : "POST",
+			body : JSON.stringify(body)
 		});
 
 		if(!response.ok){

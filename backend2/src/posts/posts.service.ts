@@ -5,36 +5,80 @@ import { Repository } from 'typeorm';
 import { PostsCreateDto } from './dto/PostsCreatDTO.dto';
 import { Request, Response } from 'express';
 import { AuthenticationService } from 'src/jwt/Authentication.service';
-import { FileUploaderService } from './file-uploader.service';
 import { join } from 'path';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
+import { Comments } from './entity/Comments.entity';
+import { CommentDto } from './dto/CommentDto.dto';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Posts)
     private postsRepository : Repository<Posts>,
+    @InjectRepository(Comments)
+    private commentsRepository : Repository<Comments>,
     private authService : AuthenticationService,
-    private fileService : FileUploaderService
   ){}
 
-  findAll(){
+  findAllPosts(){
     return this.postsRepository.find();
   }
 
-  async findOne(post_id: string) {
+  async findOnePost(post_id: number) {
     const where = {post_id};
-    const value = await this.postsRepository.findOne({where});
-    
-    return value;  
+    const post = await this.postsRepository.findOne({where});
+    const comments = await this.findComments(post_id);
+
+    return {
+      post,
+      comments
+    };  
   }
 
-  create(postData : PostsCreateDto, req : Request, res : Response){
+  async createPost(postData : PostsCreateDto, req : Request, res : Response){
     try{
       const {title, content} = postData;
       const {token} = this.authService.authenticateToken(req, res);
-      return this.postsRepository.save({title, content, email : token.email});
+      await this.postsRepository.save({title, content, email : token.email})
+      return res.sendStatus(200);
+    }catch(error){
+      return res.status(401).send({message : error});
+    }
+  }
+
+  findComments(post_id : number){
+    const where = {post_id};
+    return this.commentsRepository.find({where});
+  }
+
+  async createComment(commentData : CommentDto, req : Request, res : Response){
+    try{
+      const {post_id, content} = commentData;
+      const {token} = this.authService.authenticateToken(req, res);
+
+      await this.commentsRepository.save({
+        post_id,
+        content,
+        email : token.email
+      });
+
+      return res.sendStatus(200);
+    }catch(error){
+      return res.status(401).send({message : error});
+    }
+  }
+
+  async modifyComment(commentData : CommentDto, req : Request, res : Response){
+    try{
+      const {content, comment_id} = commentData;
+      this.authService.authenticateToken(req, res);
+
+      await this.commentsRepository.update(comment_id,{
+        content,
+      });
+
+      return res.sendStatus(200);
     }catch(error){
       return res.status(401).send({message : error});
     }
